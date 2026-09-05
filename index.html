@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>iOS &amp; iPadOS 27 UI Kit — Developer Reference</title>
+<style>
+  :root {
+    --bg: #fff;
+    --bg-secondary: #f5f5f7;
+    --text-primary: #1d1d1f;
+    --text-secondary: #6e6e73;
+    --text-tertiary: #86868b;
+    --border: #e8e8ed;
+    --card-bg: #f5f5f7;
+    --header-bg: #000;
+    --table-header: #f0f0f2;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #000;
+      --bg-secondary: #1c1c1e;
+      --text-primary: #f5f5f7;
+      --text-secondary: #a1a1a6;
+      --text-tertiary: #6e6e73;
+      --border: #38383a;
+      --card-bg: #1c1c1e;
+      --header-bg: #000;
+      --table-header: #2c2c2e;
+    }
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'SF Pro Display', 'Helvetica Neue', Arial, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .header {
+    background: var(--header-bg);
+    color: #fff;
+    padding: 80px 60px;
+  }
+  .header h1 {
+    font-size: 42px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin-bottom: 12px;
+  }
+  .header p {
+    font-size: 18px;
+    color: #a1a1a6;
+    max-width: 700px;
+  }
+
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 40px;
+  }
+
+  .section {
+    padding: 80px 0 0;
+  }
+  .section-header {
+    margin-bottom: 32px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .section-header h2 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.3px;
+    margin-bottom: 6px;
+  }
+  .section-header p {
+    font-size: 15px;
+    color: var(--text-secondary);
+  }
+
+  /* Principles */
+  .principles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(380px, 1fr));
+    gap: 20px;
+  }
+  .principle-card {
+    background: var(--card-bg);
+    border-radius: 16px;
+    padding: 28px;
+  }
+  .principle-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  .principle-card p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Color swatches */
+  .color-category { margin-bottom: 36px; }
+  .color-category h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+  }
+  .color-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .color-swatch {
+    width: 120px;
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--card-bg);
+  }
+  .color-swatch .light-half,
+  .color-swatch .dark-half {
+    height: 48px;
+    position: relative;
+  }
+  .color-swatch .dark-half {
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .color-swatch .mode-label {
+    position: absolute;
+    bottom: 4px;
+    right: 6px;
+    font-size: 9px;
+    color: rgba(255,255,255,0.7);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+  }
+  .color-swatch .swatch-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    text-align: center;
+    padding: 8px 4px;
+  }
+  .color-swatch .swatch-values {
+    font-size: 9px;
+    color: var(--text-tertiary);
+    text-align: center;
+    padding: 0 4px 8px;
+    line-height: 1.4;
+  }
+
+  /* Tables */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .data-table thead th {
+    background: var(--table-header);
+    text-align: left;
+    padding: 12px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .data-table tbody td {
+    padding: 12px 16px;
+    border-top: 1px solid var(--border);
+    color: var(--text-primary);
+  }
+  .data-table tbody tr:hover {
+    background: var(--card-bg);
+  }
+  .data-table .name-col {
+    font-weight: 500;
+  }
+  .data-table .count-col {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    color: var(--text-tertiary);
+  }
+
+  /* Component list */
+  .component-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2px;
+  }
+  .component-category {
+    margin-bottom: 40px;
+  }
+  .component-category h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .component-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  .component-item:hover {
+    background: var(--card-bg);
+  }
+  .component-item .name {
+    font-weight: 500;
+  }
+  .component-item .badge {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    background: var(--table-header);
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* Bezels */
+  .bezel-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+  }
+  .bezel-item {
+    text-align: center;
+  }
+  .bezel-item .bezel-shape {
+    width: 100px;
+    height: 200px;
+    border: 3px solid var(--text-primary);
+    border-radius: 20px;
+    margin: 0 auto 12px;
+    position: relative;
+    overflow: hidden;
+  }
+  .bezel-item .bezel-shape.ipad {
+    width: 180px;
+    height: 130px;
+    border-radius: 14px;
+  }
+  .bezel-item .notch {
+    width: 60px;
+    height: 20px;
+    background: var(--text-primary);
+    border-radius: 0 0 12px 12px;
+    margin: 0 auto;
+  }
+  .bezel-item .dynamic-island {
+    width: 50px;
+    height: 14px;
+    background: var(--text-primary);
+    border-radius: 10px;
+    margin: 8px auto 0;
+  }
+  .bezel-item .name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+  }
+
+  /* Nav */
+  .toc {
+    position: fixed;
+    right: 24px;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 100;
+  }
+  .toc a {
+    font-size: 11px;
+    color: var(--text-tertiary);
+    text-decoration: none;
+    padding: 4px 12px;
+    border-right: 2px solid transparent;
+    text-align: right;
+    transition: all 0.2s;
+  }
+  .toc a:hover {
+    color: var(--text-primary);
+    border-right-color: rgb(0,136,255);
+  }
+
+  @media (max-width: 900px) {
+    .toc { display: none; }
+    .header { padding: 40px 24px; }
+    .header h1 { font-size: 28px; }
+    .container { padding: 0 20px; }
+    .principles-grid { grid-template-columns: 1fr; }
+  }
+
+  .footer {
+    text-align: center;
+    padding: 60px 0;
+    margin-top: 80px;
+    border-top: 1px solid var(--border);
+    color: var(--text-tertiary);
+    font-size: 13px;
+  }
+
+  /* Mode toggle */
+  .mode-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 200;
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 6px 14px;
+    font-size: 13px;
+    cursor: pointer;
+    color: var(--text-primary);
+    font-family: inherit;
+  }
+</style>
+</head>
+<body>
+
+<nav class="toc">
+  <a href="#principles">Principles</a>
+  <a href="#colors">Colors</a>
+  <a href="#typography">Typography</a>
+  <a href="#variables">Variables</a>
+  <a href="#components">Components</a>
+  <a href="#variants">Variants</a>
+  <a href="#bezels">Bezels</a>
+</nav>
+
+<div class="header">
+  <h1>iOS &amp; iPadOS 27 UI Kit</h1>
+  <p>Developer Reference — Components, variants, color tokens, typography, and design principles</p>
+</div>
+
+<div class="container">
+
+  <!-- Design Principles -->
+  <section class="section" id="principles">
+    <div class="section-header">
+      <h2>Design Principles</h2>
+      <p>Key principles from Apple Human Interface Guidelines for iOS &amp; iPadOS 27</p>
+    </div>
+    <div class="principles-grid">
+      <div class="principle-card">
+        <h3>Liquid Glass</h3>
+        <p>iOS 27 introduces Liquid Glass — a translucent material creating depth and layering. It adapts to content behind it and shifts between light/dark. Use Liquid Glass components for a fluid, spatial interface.</p>
+      </div>
+      <div class="principle-card">
+        <h3>Light &amp; Dark Mode</h3>
+        <p>Every component supports both Light and Dark appearances. The Colors variable collection provides semantic tokens (Backgrounds, Labels, Fills, Accents) that automatically adapt. Use variable modes — never hardcode colors.</p>
+      </div>
+      <div class="principle-card">
+        <h3>Dynamic Type</h3>
+        <p>Support all 12 Dynamic Type sizes (xSmall &rarr; AX5). The Dynamic Type variable collection scales font sizes and line heights automatically. Text styles use SF Pro with precise tracking. Always test at multiple sizes.</p>
+      </div>
+      <div class="principle-card">
+        <h3>Semantic Color Tokens</h3>
+        <p>Use semantic tokens: Labels/Primary for text, Backgrounds/Primary for surfaces, Fills/Primary for tinted fills, Accents/Blue for interactive elements. Elevated variants exist for content above the base layer.</p>
+      </div>
+      <div class="principle-card">
+        <h3>Safe Areas &amp; Layout</h3>
+        <p>Respect safe area insets on all devices. The Dimensions variable collection provides iPhone vs iPad values. Home Indicator and Status Bars occupy system-reserved regions.</p>
+      </div>
+      <div class="principle-card">
+        <h3>SF Symbols</h3>
+        <p>Use SF Symbols for all iconography. They scale with Dynamic Type, support variable rendering, and adapt to weight. Install the SF Symbols app for the full catalog.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Color Tokens -->
+  <section class="section" id="colors">
+    <div class="section-header">
+      <h2>Color Tokens (Light &rarr; Dark)</h2>
+      <p>Semantic color variables from the Colors collection. Top half = Light, bottom half = Dark.</p>
+    </div>
+
+    <div class="color-category">
+      <h3>Accent Colors</h3>
+      <div class="color-grid">
+        <div class="color-swatch"><div class="light-half" style="background:rgb(255,56,60)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(255,66,69)"><span class="mode-label">Dark</span></div><div class="swatch-name">Red</div><div class="swatch-values">L: 255,56,60<br>D: 255,66,69</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(255,141,40)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(255,146,48)"><span class="mode-label">Dark</span></div><div class="swatch-name">Orange</div><div class="swatch-values">L: 255,141,40<br>D: 255,146,48</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(255,204,0)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(255,214,0)"><span class="mode-label">Dark</span></div><div class="swatch-name">Yellow</div><div class="swatch-values">L: 255,204,0<br>D: 255,214,0</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(52,199,89)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(48,209,88)"><span class="mode-label">Dark</span></div><div class="swatch-name">Green</div><div class="swatch-values">L: 52,199,89<br>D: 48,209,88</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(0,200,179)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(0,218,195)"><span class="mode-label">Dark</span></div><div class="swatch-name">Mint</div><div class="swatch-values">L: 0,200,179<br>D: 0,218,195</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(0,195,208)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(0,210,224)"><span class="mode-label">Dark</span></div><div class="swatch-name">Teal</div><div class="swatch-values">L: 0,195,208<br>D: 0,210,224</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(0,192,232)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(60,211,254)"><span class="mode-label">Dark</span></div><div class="swatch-name">Cyan</div><div class="swatch-values">L: 0,192,232<br>D: 60,211,254</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(0,136,255)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(0,145,255)"><span class="mode-label">Dark</span></div><div class="swatch-name">Blue</div><div class="swatch-values">L: 0,136,255<br>D: 0,145,255</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(97,85,245)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(109,124,255)"><span class="mode-label">Dark</span></div><div class="swatch-name">Indigo</div><div class="swatch-values">L: 97,85,245<br>D: 109,124,255</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(203,48,224)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(219,52,242)"><span class="mode-label">Dark</span></div><div class="swatch-name">Purple</div><div class="swatch-values">L: 203,48,224<br>D: 219,52,242</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(255,45,85)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(255,55,95)"><span class="mode-label">Dark</span></div><div class="swatch-name">Pink</div><div class="swatch-values">L: 255,45,85<br>D: 255,55,95</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(172,127,94)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(183,138,102)"><span class="mode-label">Dark</span></div><div class="swatch-name">Brown</div><div class="swatch-values">L: 172,127,94<br>D: 183,138,102</div></div>
+      </div>
+    </div>
+
+    <div class="color-category">
+      <h3>Background Colors</h3>
+      <div class="color-grid">
+        <div class="color-swatch"><div class="light-half" style="background:rgb(255,255,255);border:1px solid #e8e8ed"><span class="mode-label" style="color:#86868b;text-shadow:none">Light</span></div><div class="dark-half" style="background:rgb(0,0,0)"><span class="mode-label">Dark</span></div><div class="swatch-name">Primary</div><div class="swatch-values">L: #FFF<br>D: #000</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(242,242,247)"><span class="mode-label" style="color:#86868b;text-shadow:none">Light</span></div><div class="dark-half" style="background:rgb(28,28,30)"><span class="mode-label">Dark</span></div><div class="swatch-name">Secondary</div><div class="swatch-values">L: 242,242,247<br>D: 28,28,30</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(255,255,255);border:1px solid #e8e8ed"><span class="mode-label" style="color:#86868b;text-shadow:none">Light</span></div><div class="dark-half" style="background:rgb(44,44,46)"><span class="mode-label">Dark</span></div><div class="swatch-name">Tertiary</div><div class="swatch-values">L: #FFF<br>D: 44,44,46</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(255,255,255);border:1px solid #e8e8ed"><span class="mode-label" style="color:#86868b;text-shadow:none">Light</span></div><div class="dark-half" style="background:rgb(28,28,30)"><span class="mode-label">Dark</span></div><div class="swatch-name">Primary Elevated</div><div class="swatch-values">L: #FFF<br>D: 28,28,30</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(242,242,247)"><span class="mode-label" style="color:#86868b;text-shadow:none">Light</span></div><div class="dark-half" style="background:rgb(44,44,46)"><span class="mode-label">Dark</span></div><div class="swatch-name">Secondary Elevated</div><div class="swatch-values">L: 242,242,247<br>D: 44,44,46</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(255,255,255);border:1px solid #e8e8ed"><span class="mode-label" style="color:#86868b;text-shadow:none">Light</span></div><div class="dark-half" style="background:rgb(58,58,60)"><span class="mode-label">Dark</span></div><div class="swatch-name">Tertiary Elevated</div><div class="swatch-values">L: #FFF<br>D: 58,58,60</div></div>
+      </div>
+    </div>
+
+    <div class="color-category">
+      <h3>Gray Scale</h3>
+      <div class="color-grid">
+        <div class="color-swatch"><div class="light-half" style="background:rgb(142,142,147)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(142,142,147)"><span class="mode-label">Dark</span></div><div class="swatch-name">Gray</div><div class="swatch-values">L/D: 142,142,147</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(174,174,178)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(99,99,102)"><span class="mode-label">Dark</span></div><div class="swatch-name">Gray 2</div><div class="swatch-values">L: 174,174,178<br>D: 99,99,102</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(199,199,204)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(72,72,74)"><span class="mode-label">Dark</span></div><div class="swatch-name">Gray 3</div><div class="swatch-values">L: 199,199,204<br>D: 72,72,74</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(209,209,214)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(58,58,60)"><span class="mode-label">Dark</span></div><div class="swatch-name">Gray 4</div><div class="swatch-values">L: 209,209,214<br>D: 58,58,60</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(229,229,234)"><span class="mode-label">Light</span></div><div class="dark-half" style="background:rgb(44,44,46)"><span class="mode-label">Dark</span></div><div class="swatch-name">Gray 5</div><div class="swatch-values">L: 229,229,234<br>D: 44,44,46</div></div>
+        <div class="color-swatch"><div class="light-half" style="background:rgb(242,242,247)"><span class="mode-label" style="color:#86868b;text-shadow:none">Light</span></div><div class="dark-half" style="background:rgb(28,28,30)"><span class="mode-label">Dark</span></div><div class="swatch-name">Gray 6</div><div class="swatch-values">L: 242,242,247<br>D: 28,28,30</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Typography -->
+  <section class="section" id="typography">
+    <div class="section-header">
+      <h2>Typography — SF Pro Text Styles</h2>
+      <p>All text styles using SF Pro. Sizes shown at Large (Default) Dynamic Type setting.</p>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Style Name</th><th>Size (pt)</th><th>Weight</th><th>Leading</th><th>Tracking</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="name-col">Large Title</td><td>34</td><td>Regular</td><td>41</td><td>0.4</td></tr>
+        <tr><td class="name-col">Large Title Emphasized</td><td>34</td><td>Bold</td><td>41</td><td>0.4</td></tr>
+        <tr><td class="name-col">Title 1</td><td>28</td><td>Regular</td><td>34</td><td>0.38</td></tr>
+        <tr><td class="name-col">Title 1 Emphasized</td><td>28</td><td>Bold</td><td>34</td><td>0.38</td></tr>
+        <tr><td class="name-col">Title 2</td><td>22</td><td>Regular</td><td>28</td><td>-0.26</td></tr>
+        <tr><td class="name-col">Title 3</td><td>20</td><td>Regular</td><td>25</td><td>-0.45</td></tr>
+        <tr><td class="name-col">Headline</td><td>17</td><td>Semibold</td><td>22</td><td>-0.43</td></tr>
+        <tr><td class="name-col">Body</td><td>17</td><td>Regular</td><td>22</td><td>-0.43</td></tr>
+        <tr><td class="name-col">Callout</td><td>16</td><td>Regular</td><td>21</td><td>-0.31</td></tr>
+        <tr><td class="name-col">Subheadline</td><td>15</td><td>Regular</td><td>20</td><td>-0.23</td></tr>
+        <tr><td class="name-col">Footnote</td><td>13</td><td>Regular</td><td>18</td><td>-0.08</td></tr>
+        <tr><td class="name-col">Caption 1</td><td>12</td><td>Regular</td><td>16</td><td>0</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Variable Collections -->
+  <section class="section" id="variables">
+    <div class="section-header">
+      <h2>Variable Collections</h2>
+      <p>Overview of all variable collections and their modes — essential for theming and responsive design</p>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Collection</th><th>Modes</th><th style="text-align:right">Variables</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="name-col">Colors</td><td>Light, Dark</td><td class="count-col">63</td><td>All semantic color tokens — accents, backgrounds, fills, labels, separators, grays, overlays</td></tr>
+        <tr><td class="name-col">Icons</td><td>Light, Dark, Clear Light</td><td class="count-col">1</td><td>Icon appearance mode switching</td></tr>
+        <tr><td class="name-col">Dimensions</td><td>iPhone, iPad</td><td class="count-col">25</td><td>Device-specific layout dimensions and spacing values</td></tr>
+        <tr><td class="name-col">Dynamic Type</td><td>12 sizes (xSmall &rarr; AX5)</td><td class="count-col">22</td><td>Font size scaling for accessibility. Default = Large</td></tr>
+        <tr><td class="name-col">Text Leading</td><td>Default, Loose, Tight</td><td class="count-col">132</td><td>Line height variants per text style</td></tr>
+        <tr><td class="name-col">Kit</td><td>Mode</td><td class="count-col">40</td><td>Internal kit configuration variables</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Components -->
+  <section class="section" id="components">
+    <div class="section-header">
+      <h2>Component Library</h2>
+      <p>All 55 public components with Light &amp; Dark mode support, organized by category</p>
+    </div>
+
+    <div class="component-category">
+      <h3>Controls <span style="font-weight:400;color:var(--text-tertiary);font-size:14px">(11)</span></h3>
+      <div class="component-item"><span class="name">Button - Content Area</span><span class="badge">108 variants</span></div>
+      <div class="component-item"><span class="name">Button - Liquid Glass - Text</span><span class="badge">24 variants</span></div>
+      <div class="component-item"><span class="name">Button - Liquid Glass - Symbol</span><span class="badge">8 variants</span></div>
+      <div class="component-item"><span class="name">Toggle - Switch</span><span class="badge">8 variants</span></div>
+      <div class="component-item"><span class="name">Sliders</span><span class="badge">15 variants</span></div>
+      <div class="component-item"><span class="name">Segmented Control</span><span class="badge">4 variants</span></div>
+      <div class="component-item"><span class="name">Progress Bar - Linear</span><span class="badge">11 variants</span></div>
+      <div class="component-item"><span class="name">Progress Bar - Spinner</span><span class="badge">3 variants</span></div>
+      <div class="component-item"><span class="name">Page Control</span><span class="badge">3 variants</span></div>
+      <div class="component-item"><span class="name">Popup Button</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Text Field</span><span class="badge">4 variants</span></div>
+    </div>
+
+    <div class="component-category">
+      <h3>Navigation <span style="font-weight:400;color:var(--text-tertiary);font-size:14px">(5)</span></h3>
+      <div class="component-item"><span class="name">Toolbar - Top - iPhone</span><span class="badge">5 variants</span></div>
+      <div class="component-item"><span class="name">Toolbar - Top - iPad</span><span class="badge">8 variants</span></div>
+      <div class="component-item"><span class="name">Toolbar - Bottom - iPhone</span><span class="badge">6 variants</span></div>
+      <div class="component-item"><span class="name">Tab Bar - iPhone</span><span class="badge">24 variants</span></div>
+      <div class="component-item"><span class="name">Home Indicator</span><span class="badge">4 variants</span></div>
+    </div>
+
+    <div class="component-category">
+      <h3>Content <span style="font-weight:400;color:var(--text-tertiary);font-size:14px">(7)</span></h3>
+      <div class="component-item"><span class="name">List Row</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Row - Button</span><span class="badge">3 variants</span></div>
+      <div class="component-item"><span class="name">Row with Swipe Actions</span><span class="badge">6 variants</span></div>
+      <div class="component-item"><span class="name">List Header</span><span class="badge">3 variants</span></div>
+      <div class="component-item"><span class="name">Index Bar</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Sidebar Row</span><span class="badge">12 variants</span></div>
+      <div class="component-item"><span class="name">Sidebar</span><span class="badge">2 variants</span></div>
+    </div>
+
+    <div class="component-category">
+      <h3>Overlays &amp; Modals <span style="font-weight:400;color:var(--text-tertiary);font-size:14px">(9)</span></h3>
+      <div class="component-item"><span class="name">Alert</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Sheet - iPhone</span><span class="badge">3 variants</span></div>
+      <div class="component-item"><span class="name">Grabber</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Popovers (iPad Only)</span><span class="badge">12 variants</span></div>
+      <div class="component-item"><span class="name">Context Menu</span><span class="badge">4 variants</span></div>
+      <div class="component-item"><span class="name">Notification - Collapsed</span><span class="badge">3 variants</span></div>
+      <div class="component-item"><span class="name">Overlay</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Empty States</span><span class="badge">3 variants</span></div>
+      <div class="component-item"><span class="name">Face ID</span><span class="badge">2 variants</span></div>
+    </div>
+
+    <div class="component-category">
+      <h3>Menus <span style="font-weight:400;color:var(--text-tertiary);font-size:14px">(6)</span></h3>
+      <div class="component-item"><span class="name">Menu</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Menu Items</span><span class="badge">12 variants</span></div>
+      <div class="component-item"><span class="name">Menu Items - Submenus</span><span class="badge">16 variants</span></div>
+      <div class="component-item"><span class="name">Quick Action</span><span class="badge">4 variants</span></div>
+      <div class="component-item"><span class="name">Section Title</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Separator</span><span class="badge">2 variants</span></div>
+    </div>
+
+    <div class="component-category">
+      <h3>Materials &amp; Glass <span style="font-weight:400;color:var(--text-tertiary);font-size:14px">(4)</span></h3>
+      <div class="component-item"><span class="name">Liquid Glass - Large</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Liquid Glass - Medium</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Liquid Glass - Small</span><span class="badge">8 variants</span></div>
+      <div class="component-item"><span class="name">Scroll Edge Effect - Hard</span><span class="badge">4 variants</span></div>
+    </div>
+
+    <div class="component-category">
+      <h3>System &amp; Input <span style="font-weight:400;color:var(--text-tertiary);font-size:14px">(9)</span></h3>
+      <div class="component-item"><span class="name">Activity View - iPhone</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Activity View - iPad</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Status Bar &amp; Menu Bar - iPad</span><span class="badge">4 variants</span></div>
+      <div class="component-item"><span class="name">Keyboard - iPhone</span><span class="badge">9 variants</span></div>
+      <div class="component-item"><span class="name">Keyboard - iPad</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">App Icon - iPhone</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">App Icon - iPad</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Home Screen Widget - iPhone</span><span class="badge">4 variants</span></div>
+      <div class="component-item"><span class="name">Home Screen Widget - iPad</span><span class="badge">4 variants</span></div>
+    </div>
+
+    <div class="component-category">
+      <h3>Date, Time &amp; Windows <span style="font-weight:400;color:var(--text-tertiary);font-size:14px">(4)</span></h3>
+      <div class="component-item"><span class="name">Date and Time - Collapsed</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Date and Time - Pickers</span><span class="badge">2 variants</span></div>
+      <div class="component-item"><span class="name">Picker Button</span><span class="badge">4 variants</span></div>
+      <div class="component-item"><span class="name">Window with Sidebar</span><span class="badge">2 variants</span></div>
+    </div>
+  </section>
+
+  <!-- Variant Properties Reference -->
+  <section class="section" id="variants">
+    <div class="section-header">
+      <h2>Component Variant Properties Reference</h2>
+      <p>Key components and their configurable variant properties for developers</p>
+    </div>
+    <table class="data-table">
+      <thead>
+        <tr><th>Component</th><th>Variant Properties</th><th style="text-align:right">Count</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="name-col">Button - Content Area</td><td>Size (S/M/L) &middot; Style (Bordered Prominent/Bordered/Borderless) &middot; Label Style (Title+Icon/Icon/Title) &middot; Is Enabled &middot; Destructive</td><td class="count-col">108</td></tr>
+        <tr><td class="name-col">Button - Liquid Glass - Text</td><td>Size (S/M/L) &middot; Style (Glass Prominent/Glass) &middot; Is Enabled &middot; Destructive</td><td class="count-col">24</td></tr>
+        <tr><td class="name-col">Button - Liquid Glass - Symbol</td><td>Style (Glass Prominent/Glass) &middot; Is Enabled &middot; Destructive</td><td class="count-col">8</td></tr>
+        <tr><td class="name-col">Toggle - Switch</td><td>State (Idle/Pressed) &middot; Is On &middot; Is Enabled</td><td class="count-col">8</td></tr>
+        <tr><td class="name-col">Sliders</td><td>State (Idle/Pressed/Disabled) &middot; Value (0&ndash;100%)</td><td class="count-col">15</td></tr>
+        <tr><td class="name-col">Segmented Control</td><td>Size (Large/Small) &middot; Is Enabled</td><td class="count-col">4</td></tr>
+        <tr><td class="name-col">Text Field</td><td>State (Placeholder/Focused/Typing/Value Entered)</td><td class="count-col">4</td></tr>
+        <tr><td class="name-col">Tab Bar - iPhone</td><td>Minimized &middot; Tabs (2&ndash;5) &middot; Type (Default/Search Role/Prominent Tab)</td><td class="count-col">24</td></tr>
+        <tr><td class="name-col">Toolbar - Top - iPhone</td><td>Style (Default/Inline Large/Large Title/Title 2 Line/Title 2 Line Left)</td><td class="count-col">5</td></tr>
+        <tr><td class="name-col">Toolbar - Bottom - iPhone</td><td>Type (Buttons/Buttons+Page Dots/Search variants)</td><td class="count-col">6</td></tr>
+        <tr><td class="name-col">Alert</td><td>Button Layout (Side-by-Side/Stacked)</td><td class="count-col">2</td></tr>
+        <tr><td class="name-col">Sheet - iPhone</td><td>Detent (Medium/Large/Large Stacked)</td><td class="count-col">3</td></tr>
+        <tr><td class="name-col">Popovers (iPad Only)</td><td>Edge (12 positions: Top/Bottom/Leading/Trailing &times; alignment)</td><td class="count-col">12</td></tr>
+        <tr><td class="name-col">Context Menu</td><td>Alignment (Vertical/Horizontal iPad) &middot; Side (Trailing/Leading)</td><td class="count-col">4</td></tr>
+        <tr><td class="name-col">Menu Items</td><td>Mode (Light/Dark) &middot; State (Default/Destructive/Disabled) &middot; Menu has Selection</td><td class="count-col">12</td></tr>
+        <tr><td class="name-col">Sidebar Row</td><td>State (Default/Selected/Disabled/Disclosable) &middot; Indent Level (0&ndash;2)</td><td class="count-col">12</td></tr>
+        <tr><td class="name-col">Liquid Glass - Small</td><td>Mode (Light/Dark) &middot; Active &middot; Prominent</td><td class="count-col">8</td></tr>
+        <tr><td class="name-col">Home Screen Widget</td><td>Size (Small/Medium/Large/Extra Large) — iPhone &amp; iPad variants</td><td class="count-col">4</td></tr>
+        <tr><td class="name-col">Keyboard - iPhone</td><td>Type (9 layouts: Lower/Upper Case, Punctuation, Numeric, Web, URL, Email, Number Pad, Emoji)</td><td class="count-col">9</td></tr>
+        <tr><td class="name-col">Progress Bar - Linear</td><td>Value (0%&ndash;100% in 10% increments)</td><td class="count-col">11</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- Device Bezels -->
+  <section class="section" id="bezels">
+    <div class="section-header">
+      <h2>Supported Device Bezels</h2>
+      <p>Product bezels included for presentations and mockups</p>
+    </div>
+    <div class="bezel-grid">
+      <div class="bezel-item">
+        <div class="bezel-shape"><div class="dynamic-island"></div></div>
+        <div class="name">iPhone 17 Pro</div>
+      </div>
+      <div class="bezel-item">
+        <div class="bezel-shape"><div class="dynamic-island"></div></div>
+        <div class="name">iPhone 17 Pro Max</div>
+      </div>
+      <div class="bezel-item">
+        <div class="bezel-shape"><div class="dynamic-island"></div></div>
+        <div class="name">iPhone 17</div>
+      </div>
+      <div class="bezel-item">
+        <div class="bezel-shape"><div class="dynamic-island"></div></div>
+        <div class="name">iPhone Air</div>
+      </div>
+      <div class="bezel-item">
+        <div class="bezel-shape ipad"></div>
+        <div class="name">iPad Pro M4 11"</div>
+      </div>
+      <div class="bezel-item">
+        <div class="bezel-shape ipad"></div>
+        <div class="name">iPad Pro M4 13"</div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div class="footer">
+  <p>iOS &amp; iPadOS 27 UI Kit — Developer Reference</p>
+  <p style="margin-top:4px">Generated from Figma &middot; Apple Design Resources (Beta)</p>
+</div>
+
+</body>
+</html>
